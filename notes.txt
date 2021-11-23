@@ -1,0 +1,60 @@
+ok, so i want to implement dijkstra's shortest path algorithm in java
+what do i need to represent in order to implement this algorithm ?
+this algorithm finds the shortest path from a source node to all nodes in a directed or undirected
+graph with positively weighted edges
+
+to do list:
+- graph representation
+- min heap / priority queue data structure
+- dijkstra's implementation
+
+how are we going to represent a graph ?
+i think we should store the nodes as integers from 0...n-1, where n is the number of nodes
+what if we just stored an adjacency list instead of nodes and edges ?
+
+we could store a list of nodes, where the ith position in the list represents the node labeled i,
+and the ith position stores a list of all the outgoing neighbors of i as integers. we will store
+two adjacency lists: one for the outgoing edges, and one for the incoming edges. in addition to
+this, we will store the number of edges and the number of vertices as fields of the graph class.
+instead of storing the list of edge weights separately, we will include the edge weight as a the
+second value of a tuple
+
+therefore, an example graph would look like the following:
+0: (1, 2), (4, 1), (8, 3)
+note that the first number of each tuple is the node the edge leads to, and the second number is
+the weight of the edge. we are constraining the edge to have positive weight
+
+what methods do we want our graph class to have ? remember that all of the fields of that class
+will not be public facing
+- we will need to iterate through all of the out-neighbors of a given edge
+- we will need to
+
+before i figure out what operations i will need to perform on a graph, let's remember what needs to
+be done for dijkstra's
+
+first, i initialize an array of all the distances from the source node to node with infinity (0 for
+the source node). then, i add all the neighbors to a minheap where the keys is the node and the
+value is the distance to the node. while the minheap is not empty, i remove the root node, go
+through all of its outneighbors, and update their distances if the distance to the parent plus
+the weight of the edge is less than the recorded least distance. if this is the case, i also store
+a parent pointer in an 1xn array in order to reconstruct the path. finally, i return the parent
+pointers array and the distances array.
+
+as such, i really only need to iterate through a node's outgoing edges.
+
+the three data structures that i will need for this algorithm are a minheap, a distances array,
+and a parent pointer array
+
+how are we going to implement the minheap ? we will need two structures: a map from node id to index
+in the heap, and an array which stores the node's values in the proper order
+
+ok, the graph representation is done, let's implement the minheap
+
+i've encountered some trouble with extractmin
+
+we want to grab the minimum distance of the heap, and remove the node associated with index 0
+from the reverseIndices and nodeIndices maps. then we bring the node in the last position to the
+front of the list. finally, we redirect the node who was previously associated with the index
+of size n-1 and map it to 0
+
+ok, the priority queue is done. we now must implement dijkstra's algorithm
